@@ -1,0 +1,68 @@
+@CHARSET "UTF-8";
+/*******************
+ * list block
+ *******************/
+#tabs .detail-list td{
+    padding: 10px;
+}
+
+/*******************
+ * add block
+ *******************/
+
+#addMenu td{
+    text-align: right;
+    padding-right: 200px;
+}
+#addMenu th{
+    width: 30%;
+}
+
+/*******************
+ * extra block
+ *******************/
+#eatraMenu{
+}
+#eatraMenu input{
+    width: 200px;
+    height: 40px;
+    font-size: 100%;
+}
+#sugar{
+    width: 480px;
+    float: left;
+}
+#sugar > table{
+    width: 500px;
+}
+#sugar > table, td{
+    padding: 0px;
+    margin: 0px;
+}
+#ice{
+    width: 480px;
+    float: left;
+}
+#ice table{
+    width: 500px;
+}
+#ice > table, td{
+    padding: 0px;
+    margin: 0px;
+}
+#extra{
+    width: 960px;
+}
+#extra table{
+    width: 960px;
+}
+#extraMenuSend{
+    width: 960px;
+    text-align: center;
+    margin: 30px 0px 30px 0px;
+}
+#extraMenuSend .loginSubmit{
+    height: 60px;
+    width: 300px;
+    margin: 30px;
+}

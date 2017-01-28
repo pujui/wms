@@ -1,0 +1,128 @@
+@CHARSET "UTF-8";
+
+#searchOrderForm{
+    
+}
+#searchOrderForm select, input{
+    width: 150px;
+    height: 40px;
+}
+.searchOrderTable{
+    height: 60px;
+}
+#tabs table{
+    width: 950px;
+}
+#tabs-2 td{
+    padding: 20px;
+}
+#tabs-3 td{
+    padding: 20px;
+}
+
+/*******************
+ * menu block
+ *******************/
+#tabs{
+    font: normal 14pt Arial,Helvetica,Verdana,"DejaVu Sans","Bitstream Vera Sans",Geneva,sans-serif;
+}
+#addMenuByOrder{
+    width: 530px;
+    float: left;
+}
+#addMenuByOrder > .scroll{
+    width: 560px;
+    height: 668px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+#addMenuByOrder > table{
+    width: 530px;
+}
+#addMenuByOrder > table, td{
+    padding: 0px;
+    margin: 0px;
+}
+#addMenuByOrder .addItem{
+    width: 262px;
+    height: 60px;
+    font-size: 100%;
+}
+
+/*******************
+ * order block
+ *******************/
+#addOrder{
+    width: 450px;
+    float: left;
+}
+.inputItem{
+    width: 280px;
+    height: 50px;
+    font-size: 100%;
+    margin-right: 5px;
+}
+.inputItemPrice{
+    width: 40px;
+    height: 50px;
+    font-size: 100%;
+    text-align: center;
+    margin-right: 5px;
+    
+}
+.inputItemContent{
+    padding-top: 10px;
+}
+.inputItemRadio{
+    width: 30px;
+    height: 30px;
+    text-align: right;
+}
+.inputItemAttrCheck{
+    width: 150px;
+    height: 80px;
+    text-align: center;
+    margin: 10px 0px;
+    font-size: 100%;
+}
+.inputItemAddCount{
+    width: 50px;
+    height: 50px;
+    font-size: 100%;
+    margin-top: 5px;
+}
+
+/*******************
+ * checkedAttr block
+ *******************/
+.checkedAttr{
+    width: 750px;
+}
+.checkedAttr th{
+    width: 150px;
+    height: 80px;
+    padding: 0px;
+    margin: 0px;
+}
+.checkedAttr td{
+    width: 600px;
+    height: 80px;
+    padding: 0px;
+    margin: 0px;
+}
+
+
+/*******************
+ * other block
+ *******************/
+
+.templeBtn1{
+    width: 150px;
+    height: 80px;
+    margin: 10px 0px;
+}
+.templeBtn2{
+    width: 300px;
+    height: 80px;
+    margin: 10px 0px;
+}
