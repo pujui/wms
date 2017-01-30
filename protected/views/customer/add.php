@@ -36,6 +36,24 @@
         <tr class="odd-row" >
             <td>地址</td>
             <td >
+				<select id="city1" name="city1" >
+				<?php foreach($address as $address_row){ ?>
+					<option><?=$address_row[0] ?></option>
+				<?php }?>
+				</select>
+				<select id="city2" name="city2" >
+					<?php foreach($address as $address_row){ ?>
+						<?php 
+						$city = 0;
+						foreach($address_row as $key=>$row2){
+							if($key == 0){ $city = $row2; continue; }
+						?>
+					<option city="<?=$city ?>" style="display:none;" ><?=$row2 ?></option>
+						<?php 
+						}
+						?>
+					<?php }?>
+				</select>
                 <input type="text" name="address" maxlength="200"/>
             </td>
         </tr>

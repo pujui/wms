@@ -69,8 +69,8 @@ class CustomerController extends FrameController{
     }
 
 	public function actionAdd(){
+		$customerManager = new CustomerManager;
         if(isset($_POST['name'], $_POST['name'])){
-			$customerManager = new CustomerManager;
 			$customerManager->add($_POST);
 			$this->redirect(Yii::app()->request->baseUrl.'/customer/');
 		}
@@ -80,7 +80,9 @@ class CustomerController extends FrameController{
         $this->setVariable('navBarCustomer', 'active');
         $this->setJS('/js/customer/add.js');
 		
+		$address = $customerManager->getAddress();
         $this->layout('customer/add', array(
+			'address' => $address
         ));
 	}
 
