@@ -158,20 +158,21 @@ class CustomerDAO extends BaseDAO{
     public function findItemList($pageVO, $action = 'PAGE', $search = []){
         $FROM = "FROM
                     wms.item AS i ";
-        $WHERE = "WHERE 1 ";
-        $bind = [':user_id' => $search['user_id']];
+        $WHERE = " WHERE 1 ";
+        $bind = [];
 		
         if($search['name'] != ''){
-            $WHERE .= " AND item_name LIKE :name ";
-			$bind['name'] = '%'.$search['name'].'%';
+            $WHERE .= " AND i.item_name LIKE :item_name ";
+            $bind[':item_name'] = '%'.$search['name'].'%';
         }
-        if($search['item_serial'] != ''){
+		if($search['item_serial'] != ''){
             $WHERE .= " AND i.item_serial LIKE :item_serial ";
             $bind[':item_serial'] = '%'.$search['item_serial'].'%';
         }
         if($action == 'PAGE'){
             $bind[':start'] = $pageVO->start;
             $bind[':limit'] = $pageVO->limit;
+			$bind[':user_id'] = $search['user_id'];
             return $this->getCommand(
                     "SELECT i.*
 					,(

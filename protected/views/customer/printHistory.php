@@ -10,47 +10,39 @@ $tp_lang = [
 ];
 ?>
 <?php foreach ($data as $key=>$row){ ?>
-<table class="detail-list" style="width: 800px;">
+<table style="width: 700px;">
 	<tr>
-		<th colspan="2"><?=CHtml::encode($tp_lang[$row['history_type']].'單號：'.$row['history_serial']) ?></th>
+		<th colspan="4">先鋒電器行 - <?=CHtml::encode($tp_lang[$row['history_type']].'單號：'.$row['history_serial']) ?></th>
+	</tr>
+	<tr >
+		<td colspan="1">姓名</td>
+		<td colspan="3" ><?=CHtml::encode($row['customer_name']) ?></td>
 	</tr>
 	<tr>
-		<th>姓名</th>
-		<td><?=CHtml::encode($row['customer_name']) ?></td>
-	</tr>
-	<tr>
-		<th>電話1</th>
+		<td>電話1</td>
 		<td><?=CHtml::encode($row['customer_tel1']) ?></td>
-	</tr>
-	<tr>
-		<th>電話2</th>
+		<td>電話2</td>
 		<td><?=CHtml::encode($row['customer_tel2']) ?></td>
 	</tr>
 	<tr>
-		<th>手機</th>
+		<td>手機</td>
 		<td><?=CHtml::encode($row['customer_phone']) ?></td>
-	</tr>
-	<tr>
-		<th>傳真</th>
+		<td>傳真</td>
 		<td><?=CHtml::encode($row['customer_tel1']) ?></td>
 	</tr>
-	<tr>
-		<th>地址</th>
-		<td><?=CHtml::encode($row['customer_address']) ?></td>
+	<tr >
+		<td colspan="1">地址</td>
+		<td colspan="3" ><?=CHtml::encode($row['customer_address']) ?></td>
+	</tr>
+	<tr >
+		<td colspan="1">發票號碼</td>
+		<td colspan="3" ><?=CHtml::encode($row['serial_numbers']) ?></td>
 	</tr>
 	<tr>
-		<th>發票號碼</th>
-		<td><?=CHtml::encode($row['serial_numbers']) ?></td>
+		<th colspan="4">商品明細</th>
 	</tr>
 	<tr>
-		<th>總價格</th>
-		<td>$<?=number_format($row['total_price']) ?></td>
-	</tr>
-	<tr>
-		<th colspan="2">商品詳細</th>
-	</tr>
-	<tr>
-		<td style="text-align: left;" colspan="2" >
+		<td style="text-align: left;" colspan="4" >
 			<table width="100%">
 			<?php foreach ($row['details'] as $key=>$detail){ ?>
 			<tr >
@@ -61,9 +53,25 @@ $tp_lang = [
 				<td>$<?=number_format($detail['item_total_price']) ?></td>
 			</tr>
 			<?php }?>
+			<tr >
+				<td colspan="4">合計：</td>
+				<td >$<?=number_format($row['total_price']) ?></td>
+			</tr>
 			</table>
 		</td>
 	</tr>
+	<tr>
+		<td style="text-align: left;" >稅額：</td>
+		<td style="text-align: left;" >折讓金額：</td>
+		<td style="text-align: left;" >未收：$<?=number_format($row['total_price']) ?></td>
+		<td style="text-align: left;" >總計：$<?=number_format($row['total_price']) ?></td>
+	</tr>
+	<tr>
+		<th >備註：</th>
+		<td ></td>
+		<th >簽收：</th>
+		<td></td>
+	</tr>
 </table>
-<hr/>
+<div style="page-break-before: always; "></div>
 <?php }?>
