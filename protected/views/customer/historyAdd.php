@@ -16,11 +16,11 @@
             </td>
         </tr>
         <tr  >
-            <td>客戶ID</td>
+            <td>客戶</td>
             <td  style="text-align: left;">
-                <input type="text" name="customer_id" readonly="readonly"  />
+                <input type="hidden" name="customer_id" readonly="readonly"  />
 				<button type="button" id="searchCustomer" >查詢</button><br/>
-				<div class="customer_detail"  ></div>
+				<div class="customer_detail" ></div>
             </td>
         </tr>
         <tr  >
@@ -41,10 +41,11 @@
 			<?php for($i=0; $i<30; $i++){ ?>
 				<div data-sn="<?=$i ?>" class="itemAddShowAll <?php if($i>9){ echo "hide itemAddShow".(floor($i/10)); } ?>" >
 					<?=sprintf('%02d.', $i+1); ?>
-					<input type="text" name="itemId[]" style="width: 50px;"  readonly="readonly" placeholder="ID"/> 
-					<input type="text" name="itemName[]" style="width: 150px;" readonly="readonly" placeholder="商品名稱"/>
-					<input type="text" name="itemSerial[]" style="width: 200px;" readonly="readonly" placeholder="商品型號" />
-					<input type="text" name="itemPrice[]" style="width: 80px;"  placeholder="價格" />
+					<input type="hidden" name="itemId[]" style="width: 50px;"  readonly="readonly" placeholder="ID"/> 
+					<input type="text" name="itemSerial[]" style="width: 120px;" readonly="readonly" placeholder="商品型號" />
+					<input type="text" name="itemName[]" style="width: 120px;" readonly="readonly" placeholder="商品名稱"/>
+					<input type="text" name="item_sn[]" style="width: 180px;" placeholder="商品序號" />
+					<input type="text" name="itemPrice[]" style="width: 100px;"  placeholder="價格" />
 					<input type="text" name="itemCount[]" style="width: 50px;"  placeholder="數量" />
 					<button type="button" class="btn btn-default searchItem" >查詢</button>
 					<button type="button" class="btn btn-default clearItem"  >清除</button>
@@ -71,37 +72,4 @@
         </tr>
     </table>
 </form>
-<div id="searchCustomerBlockHide" class="hide" >
-	<div id="searchCustomerBlock" >
-		查詢客戶
-		<table class="detail-list searchOrderTable" >
-			<tr>
-				<td style="text-align: left; padding-left: 20px;">
-					<div>
-						<input type="text" id="searchOrderFormName" placeholder="姓名" />
-						<input type="text" id="searchOrderFormPhone"  placeholder="連絡電話" />
-						<button type="button" id="requestCustomer" class="btn btn-default"  >搜尋</button>
-					</div>
-				</td>
-			</tr>
-		</table>
-		<div class="searchCustomerBlockShow" style="height: 368px;overflow-y: scroll;overflow-x: hidden;" >查無資料</div>
-	</div>
-</div>
-<div id="searchItemBlockHide" class="hide" >
-	<div id="searchItemBlock" >
-		查詢客戶
-		<table class="detail-list searchOrderTable" >
-			<tr>
-				<td style="text-align: left; padding-left: 20px;">
-					<div>
-						<input type="text" id="searchItemFormName" placeholder="商品名" />
-						<input type="text" id="searchItemFormSerial"  placeholder="商品型號" />
-						<button type="button" id="requestItem" class="btn btn-default"  >搜尋</button>
-					</div>
-				</td>
-			</tr>
-		</table>
-		<div class="searchItemBlockShow" style="height: 368px;overflow-y: scroll;overflow-x: hidden;" >查無資料</div>
-	</div>
-</div>
+<?php include dirname(__FILE__).'/block/requestSearchAdd.php'; ?>

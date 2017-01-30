@@ -102,6 +102,7 @@ class CustomerManager{
 				if($item_id < 1) continue;
 				$item_count = $data['itemCount'][$item_key];
 				$item_price = $data['itemPrice'][$item_key];
+				$item_sn = $data['item_sn'][$item_key];
 				if($item_count < 0 || $item_price < 0) continue;
 				$details[] = [
 					'history_id' 	=> '',
@@ -109,6 +110,7 @@ class CustomerManager{
 					'item_id' 		=> $item_id,
 					'item_count' 	=> $item_count,
 					'total_price' 	=> $item_count*$item_price,
+					'item_sn' 		=> $item_sn,
 				];
 				$insert['total_price'] += $item_count*$item_price;
 			}
@@ -138,6 +140,7 @@ class CustomerManager{
 				if($item_id < 1) continue;
 				$item_count = $data['itemCount'][$item_key];
 				$item_price = $data['itemPrice'][$item_key];
+				$item_sn = $data['item_sn'][$item_key];
 				if($item_count < 0 || $item_price < 0) continue;
 				$details[] = [
 					'history_id' 	=> '',
@@ -145,6 +148,7 @@ class CustomerManager{
 					'item_id' 		=> $item_id,
 					'item_count' 	=> $item_count,
 					'total_price' 	=> $item_count*$item_price,
+					'item_sn' 		=> $item_sn,
 				];
 				$insert['total_price'] += $item_count*$item_price;
 			}

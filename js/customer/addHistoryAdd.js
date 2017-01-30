@@ -77,7 +77,7 @@ $(document).ready(function(){
 		$.ajax({
 			method: "GET",
 			url: "requestItem",
-			data: { item_name: $('#searchItemFormName').val(), item_serial: $('#searchItemFormSerial').val() }
+			data: { item_name: $('#searchItemFormName').val(), item_serial: $('#searchItemFormSerial').val(), is_price : $('#is_price').val()  }
 		})
 		.done(function( msg ) {
 			$('.searchItemBlockShow').html(msg);

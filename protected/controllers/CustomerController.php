@@ -58,11 +58,12 @@ class CustomerController extends FrameController{
         $this->renderPartial('customer/requestCustomer', [ 'customers' => $customers]);
     }
 	
-    public function actionRequestItem($item_name = '', $item_serial = ''){
+    public function actionRequestItem($item_name = '', $item_serial = '', $is_price = 0){
 		$customerManager = new CustomerManager;
 		$items = $customerManager->findItemByCreateOrder($item_name, $item_serial);
         $this->renderPartial('customer/requestItem', [ 
 			'items' => $items,
+			'is_price' => $is_price,
 			'item_types' => $this->item_types
 		]);
     }
@@ -217,6 +218,10 @@ class CustomerController extends FrameController{
             'history_serial' 	=> trim($_GET['history_serial']),
             'item_serial' 		=> trim($_GET['item_serial']),
             's' 				=> trim($_GET['s']),
+            'name' 				=> trim($_GET['name']),
+            'phone' 			=> trim($_GET['phone']),
+            'address' 			=> trim($_GET['address']),
+            'item_sn' 			=> trim($_GET['item_sn']),
 			'history_type'      => $history_type
         ];
         $this->setJS('/js/jquery/jquery.blockUI.js');
@@ -234,6 +239,7 @@ class CustomerController extends FrameController{
 			'total_money' => $total_money,
 			'pageVO' => $pageVO,
 			'ids' => $ids,
+			'history_type' => $history_type
         ));
 	}
 	
@@ -338,7 +344,8 @@ class CustomerController extends FrameController{
         $this->setJS('/js/customer/addHistoryAdd.js');
 		
         $this->layout('customer/history'.$template[$history_type].'Edit', array(
-			'history' => $history
+			'history' => $history,
+			'history_type' => $history_type
         ));
 	}
 	

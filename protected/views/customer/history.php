@@ -33,8 +33,22 @@
 					<div>
 						<?=CHtml::encode($tp_lang['kind_serial']) ?>：
 						<input type="text" name="history_serial" value="<?=CHtml::encode($pageVO->params['history_serial']) ?>" placeholder="<?=CHtml::encode($tp_lang['kind_serial']) ?>" />
-						商品型號：
+						型號：
 						<input type="text" name="item_serial" value="<?=CHtml::encode($pageVO->params['item_serial']) ?>" placeholder="商品型號" />
+						序號：
+						<input type="text" name="item_sn" value="<?=CHtml::encode($pageVO->params['item_sn']) ?>" placeholder="商品序號" />
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td style="text-align: left; padding-left: 20px;">
+					<div>
+						電話：
+						<input type="text" name="phone" value="<?=CHtml::encode($pageVO->params['phone']) ?>" placeholder="電話" />
+						姓名：
+						<input type="text" name="name" value="<?=CHtml::encode($pageVO->params['name']) ?>" placeholder="姓名" />
+						地址：
+						<input type="text" name="address" value="<?=CHtml::encode($pageVO->params['address']) ?>" placeholder="地址" />
 					</div>
 				</td>
 			</tr>
@@ -43,8 +57,10 @@
 					<div>
 						排序方式：
 						<select name="s">
-							<option value="0" ><?=CHtml::encode($tp_lang['kind_date']) ?></option>
-							<option value="1" <?php if($pageVO->params['s']=='1'){ echo 'selected="selected"'; }?> >建立日期</option>
+							<option value="0" ><?=CHtml::encode($tp_lang['kind_date']) ?> - DESC</option>
+							<option value="1" <?php if($pageVO->params['s']=='1'){ echo 'selected="selected"'; }?> ><?=CHtml::encode($tp_lang['kind_date']) ?> - ASC</option>
+							<option value="2" <?php if($pageVO->params['s']=='2'){ echo 'selected="selected"'; }?> >建立日期 - DESC</option>
+							<option value="3" <?php if($pageVO->params['s']=='3'){ echo 'selected="selected"'; }?> >建立日期 - ASC</option>
 						</select>
 						<button type="submit" class="btn btn-default"  >搜尋</button>
 						<button type="button" class="btn btn-default" onclick="location.href='?';" >預設搜尋</button>&nbsp;&nbsp;&nbsp;共<?=$pageVO->total?>筆資料

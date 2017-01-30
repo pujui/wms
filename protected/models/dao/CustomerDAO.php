@@ -21,8 +21,8 @@ class CustomerDAO extends BaseDAO{
             $bind[':serial_numbers'] = '%'.$search['serial_numbers'].'%';
         }
 		if($search['phone'] != ''){
-            $WHERE .= " AND ( customer_phone=:phone OR customer_tel1=:phone OR customer_tel2=:phone OR customer_fax=:phone ) ";
-            $bind[':phone'] = $search['phone'];
+            $WHERE .= " AND ( customer_phone LIKE :phone OR customer_tel1 LIKE :phone OR customer_tel2 LIKE :phone OR customer_fax LIKE :phone ) ";
+            $bind[':phone'] = '%'.$search['phone'].'%';
         }
     
         if($action == 'PAGE'){
@@ -70,8 +70,12 @@ class CustomerDAO extends BaseDAO{
             $bind[':name'] = '%'.$search['name'].'%';
         }
 		if($search['phone'] != ''){
-            $WHERE .= " AND ( customer_phone=:phone OR customer_tel1=:phone OR customer_tel2=:phone OR customer_fax=:phone ) ";
-            $bind[':phone'] = $search['phone'];
+            $WHERE .= " AND ( customer_phone LIKE :phone OR customer_tel1 LIKE :phone OR customer_tel2 LIKE :phone OR customer_fax LIKE :phone ) ";
+            $bind[':phone'] = '%'.$search['phone'].'%';
+        }
+        if($search['address'] != ''){
+            $WHERE .= " AND customer_address LIKE :address ";
+            $bind[':address'] = '%'.$search['address'].'%';
         }
 		return $this->getCommand(
 						"SELECT c.* "
@@ -94,8 +98,8 @@ class CustomerDAO extends BaseDAO{
             $bind[':item_name'] = '%'.$search['item_name'].'%';
         }
 		if($search['item_serial'] != ''){
-            $WHERE .= " AND item_serial=:item_serial ";
-            $bind[':item_serial'] = $search['item_serial'];
+            $WHERE .= " AND item_serial LIKE :item_serial ";
+            $bind[':item_serial'] = '%'.$search['item_serial'].'%';
         }
 		return $this->getCommand(
 						"SELECT c.* "
@@ -154,17 +158,16 @@ class CustomerDAO extends BaseDAO{
     public function findItemList($pageVO, $action = 'PAGE', $search = []){
         $FROM = "FROM
                     wms.item AS i ";
-        $WHERE = "WHERE
-                    1 ";
+        $WHERE = "WHERE 1 ";
         $bind = [':user_id' => $search['user_id']];
-
+		
         if($search['name'] != ''){
             $WHERE .= " AND item_name LIKE :name ";
-            $bind[':name'] = '%'.$search['name'].'%';
+			$bind['name'] = '%'.$search['name'].'%';
         }
         if($search['item_serial'] != ''){
-            $WHERE .= " AND item_serial=:item_serial ";
-            $bind[':item_serial'] = $search['item_serial'];
+            $WHERE .= " AND i.item_serial LIKE :item_serial ";
+            $bind[':item_serial'] = '%'.$search['item_serial'].'%';
         }
         if($action == 'PAGE'){
             $bind[':start'] = $pageVO->start;
@@ -204,7 +207,7 @@ class CustomerDAO extends BaseDAO{
                         .$WHERE,
                         $bind
                     )
-            ->queryRow();
+					->queryRow();
             return (empty($row))? []: $row;
         }
     }
@@ -214,14 +217,15 @@ class CustomerDAO extends BaseDAO{
      */
     public function addItem($data){
         $sql = "INSERT INTO wms.item
-                    (item_serial, item_name, item_type, primary_price) 
+                    (item_serial, item_name, item_type, primary_price, sell_price) 
                 VALUES
-                    (:item_serial, :item_name, :item_type, :primary_price)";
+                    (:item_serial, :item_name, :item_type, :primary_price, :sell_price)";
         $this->bindQuery($sql, array(
-            ':item_serial'  => (string)$data['item_serial'],
-            ':item_name'   	=> (string)$data['item_name'],
-            ':item_type'    => (int)$data['item_type'],
-            ':primary_price'    => (int)$data['primary_price'],
+            ':item_serial'  	=> (string)$data['item_serial'],
+            ':item_name'   		=> (string)$data['item_name'],
+            ':item_type'    	=> (int)$data['item_type'],
+            ':primary_price'  	=> (int)$data['primary_price'],
+            ':sell_price'    	=> (int)$data['sell_price'],
         ));
     }
 
@@ -241,6 +245,7 @@ class CustomerDAO extends BaseDAO{
 					':item_name' => (string)$data['item_name'],
 					':item_type' => (int)$data['item_type'],
 					':primary_price' => (int)$data['primary_price'],
+					':sell_price' => (int)$data['sell_price'],
 					':item_id' => (int)$id,
 				);
         $sql = "UPDATE wms.item 
@@ -248,7 +253,8 @@ class CustomerDAO extends BaseDAO{
                     item_serial=:item_serial, 
 					item_name=:item_name, 
 					item_type=:item_type, 
-					primary_price=:primary_price
+					primary_price=:primary_price,
+					sell_price=:sell_price
                 WHERE item_id=:item_id ";
         $this->bindQuery($sql, $bind);
     }
@@ -306,6 +312,7 @@ class CustomerDAO extends BaseDAO{
 						, item_id
 						, item_count
 						, total_price
+						, item_sn
 						, createtime
 						) 
 					VALUES  ";
@@ -317,6 +324,7 @@ class CustomerDAO extends BaseDAO{
 									, :item_id{$key}
 									, :item_count{$key}
 									, :total_price{$key}
+									, :item_sn{$key}
 									, NOW()
 								)";
 				$bind[":history_id{$key}"] = $history_id;
@@ -324,6 +332,7 @@ class CustomerDAO extends BaseDAO{
 				$bind[":item_id{$key}"] = $row['item_id'];
 				$bind[":item_count{$key}"] = $row['item_count'];
 				$bind[":total_price{$key}"] = $row['total_price'];
+				$bind[":item_sn{$key}"] = $row['item_sn'];
 			}
 			$this->bindQuery($sql . implode(',', $append_sql), $bind);
 			$transaction->commit();
@@ -349,7 +358,7 @@ class CustomerDAO extends BaseDAO{
 						process_date=:process_date, 
 						customer_id=:customer_id, 
 						total_price=:total_price, 
-						serial_numbers=:serial_numbers, 
+						serial_numbers=:serial_numbers,
 						remark=:remark, 
 						updatetime=NOW()
 					WHERE history_id=:history_id ";
@@ -377,6 +386,7 @@ class CustomerDAO extends BaseDAO{
 						, item_id
 						, item_count
 						, total_price
+						, item_sn
 						, createtime
 						) 
 					VALUES  ";
@@ -388,6 +398,7 @@ class CustomerDAO extends BaseDAO{
 									, :item_id{$key}
 									, :item_count{$key}
 									, :total_price{$key}
+									, :item_sn{$key}
 									, NOW()
 								)";
 				$bind[":history_id{$key}"] = $history_id;
@@ -395,6 +406,7 @@ class CustomerDAO extends BaseDAO{
 				$bind[":item_id{$key}"] = $row['item_id'];
 				$bind[":item_count{$key}"] = $row['item_count'];
 				$bind[":total_price{$key}"] = $row['total_price'];
+				$bind[":item_sn{$key}"] = $row['item_sn'];
 			}
 			$this->bindQuery($sql . implode(',', $append_sql), $bind);
 			$transaction->commit();
@@ -432,7 +444,7 @@ class CustomerDAO extends BaseDAO{
     public function countHistoryForToday(){
         $sql = "SELECT COUNT(history_id) count
                 FROM wms.history
-                WHERE createTime BETWEEN DATE_FORMAT(CURDATE(),'%Y-%m-%d 00:00:00') AND NOW()
+                WHERE process_date=CURDATE()
                 ";
         $row = $this->getCommand($sql)
                     ->queryRow();
@@ -450,24 +462,36 @@ class CustomerDAO extends BaseDAO{
         $WHERE = "WHERE
                     h.history_type=:history_type AND h.user_id=:user_id ";
 		if($search['s'] == '1'){
+			$ORDER_BY = " ORDER BY h.process_date ASC ";
+		}else if($search['s'] == '2'){
 			$ORDER_BY = " ORDER BY h.createTime DESC ";
+		}else if($search['s'] == '3'){
+			$ORDER_BY = " ORDER BY h.createTime ASC ";
 		}else{
 			$ORDER_BY = " ORDER BY h.process_date DESC ";
 		}
         $bind = [ ':user_id' => $search['user_id'], ':history_type' => $search['history_type'] ];
 
         if($search['history_serial'] != ''){
-            $WHERE .= " AND h.history_serial=:history_serial ";
-            $bind[':history_serial'] = $search['history_serial'];
+            $WHERE .= " AND h.history_serial LIKE :history_serial ";
+            $bind[':history_serial'] = '%'.$search['history_serial'].'%';
         }
-        if($search['item_serial'] != ''){
+        if($search['item_serial'] != '' || $search['item_sn']!=''){
+			
+			if($search['item_serial'] != ''){
+				$child_where = ' INNER JOIN wms.item i ON i.item_id=hd.item_id 
+									AND i.item_serial=:item_serial  ';
+				$bind[':item_serial'] = '%'.$search['item_serial'].'%';
+			}
+			if($search['item_sn'] != ''){
+				$child_where = ' WHERE hd.item_sn LIKE :item_sn ';
+				$bind[':item_sn'] = '%'.$search['item_sn'].'%';
+			}
             $WHERE .= " AND h.history_id IN (
 							SELECT hd.history_id 
 							FROM wms.history_detail hd
-							INNER JOIN wms.item i ON i.item_id=hd.item_id 
-								AND i.item_serial=:item_serial 
+							{$child_where}
 						)";
-            $bind[':item_serial'] = $search['item_serial'];
         }
         if($search['create_start'] != '' && $search['create_end'] != ''){
             $WHERE .= ' AND h.createTime<=:endDate AND h.createTime>=:create_start ';
@@ -478,6 +502,18 @@ class CustomerDAO extends BaseDAO{
             $WHERE .= ' AND h.process_date<=:process_end AND h.process_date>=:process_start ';
             $bind[':process_start'] = $search['start'] ;
             $bind[':process_end'] = $search['end'] ;
+        }
+        if($search['name'] != ''){
+            $WHERE .= " AND c.customer_name LIKE :name ";
+            $bind[':name'] = '%'.$search['name'].'%';
+        }
+        if($search['address'] != ''){
+            $WHERE .= " AND c.customer_address LIKE :address ";
+            $bind[':address'] = '%'.$search['address'].'%';
+        }
+		if($search['phone'] != ''){
+            $WHERE .= " AND ( customer_phone LIKE :phone OR customer_tel1 LIKE :phone OR customer_tel2 LIKE :phone OR customer_fax LIKE :phone ) ";
+            $bind[':phone'] = '%'.$search['phone'].'%';
         }
         if($action == 'PAGE'){
             $bind[':start'] = $pageVO->start;
@@ -531,7 +567,7 @@ class CustomerDAO extends BaseDAO{
 						, c.customer_id, c.customer_name, c.customer_address
 						, c.customer_tel1, c.customer_tel2, c.customer_phone, c.customer_fax
 						, c.serial_numbers as customer_serial_numbers 
-						, hd.price, hd.item_count, hd.total_price as item_total_price, hd. item_id
+						, hd.price, hd.item_count, hd.item_sn, hd.total_price as item_total_price, hd. item_id
 						, i.item_name, i.item_serial, i.item_type, i.primary_price "
                     .$FROM
                     .$WHERE

@@ -12,8 +12,8 @@ $(document).ready(function(){
     
     customerAddForm.prototype.checkVariable = function(){
         var msg = [];
-        if($('input[name=name]').val().trim() == ''){
-            msg.push('請填入姓名');
+        if($('input[name=tel1]').val().trim() == ''){
+            msg.push('請填入電話');
         }
         if(msg.length == 0){
             return true;

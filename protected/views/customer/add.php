@@ -6,13 +6,13 @@
         <tr  >
             <td>姓名</td>
             <td >
-                <input type="text" name="name" maxlength="50"  placeholder="必填" />
+                <input type="text" name="name" maxlength="50"   />
             </td>
         </tr>
         <tr class="odd-row">
             <td >電話1</td>
             <td >
-                <input type="text" name="tel1" maxlength="20"/>
+                <input type="text" name="tel1" maxlength="20" placeholder="必填" />
             </td>
         </tr>
         <tr  >
