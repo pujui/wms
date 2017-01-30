@@ -1,0 +1,1 @@
+XCOPY .\wms C:\xampp\htdocs\wms /K /E /Y /I

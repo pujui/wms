@@ -129,7 +129,7 @@ class UserManager{
      * 隨機產生一組加密用的private key
      */
     public function createPrivateKey(){
-        return 'asdfqwe';
+        return rand(1000, 9999);
     }
     
     /**
