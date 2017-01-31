@@ -465,9 +465,9 @@ class CustomerDAO extends BaseDAO{
 		if($search['s'] == '1'){
 			$ORDER_BY = " ORDER BY h.process_date ASC ";
 		}else if($search['s'] == '2'){
-			$ORDER_BY = " ORDER BY h.createTime DESC ";
+			$ORDER_BY = " ORDER BY h.createtime DESC ";
 		}else if($search['s'] == '3'){
-			$ORDER_BY = " ORDER BY h.createTime ASC ";
+			$ORDER_BY = " ORDER BY h.createtime ASC ";
 		}else{
 			$ORDER_BY = " ORDER BY h.process_date DESC ";
 		}
@@ -495,7 +495,7 @@ class CustomerDAO extends BaseDAO{
 						)";
         }
         if($search['create_start'] != '' && $search['create_end'] != ''){
-            $WHERE .= ' AND h.createTime<=:endDate AND h.createTime>=:create_start ';
+            $WHERE .= ' AND h.createtime<=:create_end AND h.createtime>=:create_start ';
             $bind[':create_start'] = $search['create_start'] . ' 00:00:00';
             $bind[':create_end'] = $search['create_end'] . ' 23:59:59';
         }
