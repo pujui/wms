@@ -41,7 +41,7 @@ CREATE TABLE `customer` (
   KEY `customer_tel2` (`customer_tel2`),
   KEY `customer_phone` (`customer_phone`),
   KEY `customer_fax` (`customer_fax`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='客戶資料表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='客戶資料表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -50,7 +50,6 @@ CREATE TABLE `customer` (
 
 LOCK TABLES `customer` WRITE;
 /*!40000 ALTER TABLE `customer` DISABLE KEYS */;
-INSERT INTO `customer` VALUES (1,'洪溥瑞','082-333645','082-333645','0911083119','','金門縣金湖鎮武德新莊自強路1號','36585455',0,'2017-01-30 12:08:41','2017-01-30 12:11:21'),(2,'洪溥聖','','','0911083118','','金門縣金城鎮武德自強路2號','',0,'2017-01-30 12:08:41','2017-01-30 12:10:36'),(3,'TEST1','33336555','','0921011142','','金門縣金沙鎮中正路1號','6585445',0,'2017-01-30 12:12:08','0000-00-00 00:00:00'),(4,'三洋電機','02-5555466','','','','台北市中正區中正路1號','65845222',0,'2017-01-30 12:12:45','0000-00-00 00:00:00');
 /*!40000 ALTER TABLE `customer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -74,7 +73,7 @@ CREATE TABLE `history` (
   `createtime` datetime NOT NULL,
   `updatetime` datetime NOT NULL,
   PRIMARY KEY (`history_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -83,7 +82,6 @@ CREATE TABLE `history` (
 
 LOCK TABLES `history` WRITE;
 /*!40000 ALTER TABLE `history` DISABLE KEYS */;
-INSERT INTO `history` VALUES (1,1,2,'20170130F00001','2017-01-30','36585455',1,185000,'明天確認\r\n後天送貨','2017-01-30 12:13:59','2017-01-30 12:17:18'),(3,1,0,'20170130P00003','2017-01-31','',4,5000,'','2017-01-30 12:20:51','0000-00-00 00:00:00'),(4,1,0,'20170130P00003','2017-01-30','W100385643',4,90000,'test','2017-01-30 12:48:17','2017-01-30 12:48:31');
 /*!40000 ALTER TABLE `history` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -101,10 +99,12 @@ CREATE TABLE `history_detail` (
   `item_id` int(11) NOT NULL COMMENT '商品ID',
   `item_count` int(11) NOT NULL COMMENT '商品數量',
   `total_price` int(11) NOT NULL,
+  `item_sn` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '商品序號',
   `createtime` datetime NOT NULL COMMENT '建立時間',
   `updatetime` datetime NOT NULL COMMENT '更新時間',
-  PRIMARY KEY (`hd_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  PRIMARY KEY (`hd_id`),
+  KEY `item_sn` (`item_sn`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -113,7 +113,6 @@ CREATE TABLE `history_detail` (
 
 LOCK TABLES `history_detail` WRITE;
 /*!40000 ALTER TABLE `history_detail` DISABLE KEYS */;
-INSERT INTO `history_detail` VALUES (7,1,25000,4,5,125000,'2017-01-30 12:17:18','0000-00-00 00:00:00'),(8,1,5000,5,1,5000,'2017-01-30 12:17:18','0000-00-00 00:00:00'),(9,1,15000,1,3,45000,'2017-01-30 12:17:18','0000-00-00 00:00:00'),(10,1,10000,2,1,10000,'2017-01-30 12:17:18','0000-00-00 00:00:00'),(12,3,5000,5,1,5000,'2017-01-30 12:20:51','0000-00-00 00:00:00'),(16,4,25000,4,2,50000,'2017-01-30 12:48:31','0000-00-00 00:00:00'),(17,4,5000,5,2,10000,'2017-01-30 12:48:31','0000-00-00 00:00:00'),(18,4,15000,1,2,30000,'2017-01-30 12:48:31','0000-00-00 00:00:00');
 /*!40000 ALTER TABLE `history_detail` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -130,8 +129,11 @@ CREATE TABLE `item` (
   `item_serial` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '商品序號',
   `item_type` tinyint(4) NOT NULL,
   `primary_price` int(11) NOT NULL COMMENT '成本價',
-  PRIMARY KEY (`item_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `sell_price` int(11) NOT NULL COMMENT '販售價',
+  PRIMARY KEY (`item_id`),
+  KEY `item_serial` (`item_serial`),
+  KEY `item_name` (`item_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -140,7 +142,6 @@ CREATE TABLE `item` (
 
 LOCK TABLES `item` WRITE;
 /*!40000 ALTER TABLE `item` DISABLE KEYS */;
-INSERT INTO `item` VALUES (1,'三洋電視','TV001-0001',0,15000),(2,'聲寶電視','TV002-0001',0,10000),(3,'電阻1K','P001-11111',1,5),(4,'三洋冰箱','ICEBOX-001-001',0,25000),(5,'三洋冷氣','ICE-01-01-2',0,5000);
 /*!40000 ALTER TABLE `item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -184,4 +185,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-01-30 12:59:19
+-- Dump completed on 2017-01-31 11:45:35
